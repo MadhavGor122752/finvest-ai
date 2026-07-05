@@ -1,10 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.authentication.models import User
-from app.authentication.schemas import (
-    LoginRequest,
-    RegisterRequest,
-)
+from app.authentication.schemas import RegisterRequest
 
 from app.core.jwt import create_access_token
 
@@ -44,12 +41,13 @@ def register_user(
 
 def login_user(
     db: Session,
-    request: LoginRequest,
+    email: str,
+    password: str,
 ) -> str:
 
     user = (
         db.query(User)
-        .filter(User.email == request.email)
+        .filter(User.email == email)
         .first()
     )
 
@@ -57,7 +55,7 @@ def login_user(
         raise ValueError("Invalid email or password.")
 
     if not verify_password(
-        request.password,
+        password,
         user.password_hash,
     ):
         raise ValueError("Invalid email or password.")

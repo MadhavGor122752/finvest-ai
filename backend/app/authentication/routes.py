@@ -1,3 +1,4 @@
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
@@ -53,12 +54,16 @@ def register(
     response_model=TokenResponse,
 )
 def login(
-    request: LoginRequest,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
 
     try:
-        token = login_user(db, request)
+        token = login_user(
+            db=db,
+            email=form_data.username,
+            password=form_data.password,
+        )
 
         return TokenResponse(
             access_token=token,

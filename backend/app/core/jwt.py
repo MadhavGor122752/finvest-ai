@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from jose import JWTError, jwt
+from jose import jwt
 
 from app.core.config import settings
 
@@ -30,12 +30,8 @@ def decode_access_token(token: str) -> dict:
     Decode and validate a JWT access token.
     """
 
-    try:
-        return jwt.decode(
-            token,
-            settings.SECRET_KEY,
-            algorithms=[settings.ALGORITHM],
-        )
-
-    except JWTError:
-        return {}
+    return jwt.decode(
+        token,
+        settings.SECRET_KEY,
+        algorithms=[settings.ALGORITHM],
+    )
