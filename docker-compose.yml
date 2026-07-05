@@ -1,0 +1,45 @@
+services:
+
+  db:
+    image: postgres:17-alpine
+    container_name: finvest-postgres
+
+    environment:
+      POSTGRES_DB: finvest_ai
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: finvest-redis
+
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: finvest-backend
+
+    env_file:
+      - ./backend/.env
+
+    volumes:
+      - ./backend:/app
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
