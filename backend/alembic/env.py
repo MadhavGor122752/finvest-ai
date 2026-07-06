@@ -9,6 +9,7 @@ from app.core.database import Base
 from app.profile.models import UserProfile
 # Import all models here
 from app.authentication.models import User
+from app.transaction.models import Transaction
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
