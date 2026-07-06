@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# Build
+dist/
+build/
+
+# Node.js (future frontend)
+node_modules/
+.next/
