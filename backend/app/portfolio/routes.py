@@ -1,6 +1,7 @@
+from decimal import Decimal
+
 from fastapi import APIRouter
 from fastapi import Depends
-
 from sqlalchemy.orm import Session
 
 from app.authentication.dependencies import get_current_user
@@ -38,7 +39,13 @@ def invest(
         request=request,
     )
 
+    investment.current_nav = investment.purchase_nav
+    investment.current_value = investment.investment_amount
+    investment.profit_loss = Decimal("0.00")
+    investment.return_percentage = Decimal("0.00")
+
     return InvestmentResponse.model_validate(investment)
+
 
 @router.get(
     "/",
