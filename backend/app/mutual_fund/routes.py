@@ -1,6 +1,4 @@
 from fastapi import APIRouter
-from fastapi import HTTPException
-from fastapi import Query
 
 from app.mutual_fund.schemas import (
     MutualFundDetailResponse,
@@ -12,8 +10,8 @@ from app.mutual_fund.service import (
 )
 
 router = APIRouter(
-    prefix="/api/v1/mutual-funds",
-    tags=["Mutual Funds"],
+    prefix="/api/v1/mutual-fund",
+    tags=["Mutual Fund"],
 )
 
 
@@ -21,12 +19,10 @@ router = APIRouter(
     "/search",
     response_model=list[MutualFundResponse],
 )
-def search(
-    query: str | None = Query(
-        default=None,
-        description="Search by mutual fund name",
-    ),
+def search_funds(
+    query: str | None = None,
 ):
+
     return search_mutual_funds(query)
 
 
@@ -34,16 +30,8 @@ def search(
     "/{scheme_code}",
     response_model=MutualFundDetailResponse,
 )
-def get_details(
+def fund_details(
     scheme_code: int,
 ):
 
-    fund = get_mutual_fund_details(scheme_code)
-
-    if fund is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Mutual fund not found.",
-        )
-
-    return fund
+    return get_mutual_fund_details(scheme_code)
