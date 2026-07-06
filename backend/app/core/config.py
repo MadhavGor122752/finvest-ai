@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     ALGORITHM: str
 
     ACCESS_TOKEN_EXPIRE_MINUTES: int
-
+    MF_API_BASE_URL: str = "https://api.mfapi.in/mf"
     DATABASE_URL: str
     REDIS_URL: str
 
