@@ -5,6 +5,8 @@ from app.profile.routes import router as profile_router
 from app.market.routes import router as market_router
 from app.mutual_fund.routes import router as mutual_fund_router
 from app.sip.routes import router as sip_router
+from app.portfolio.routes import router as portfolio_router    
+
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0.0",
@@ -16,6 +18,7 @@ app.include_router(profile_router)
 app.include_router(market_router)
 app.include_router(mutual_fund_router)
 app.include_router(sip_router)
+app.include_router(portfolio_router)
 @app.get("/", tags=["Health"])
 def root():
     return {
