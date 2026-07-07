@@ -1,6 +1,8 @@
 import uuid
+from enum import Enum
 
 from sqlalchemy import Boolean
+from sqlalchemy import Enum as SqlEnum
 from sqlalchemy import String
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -9,6 +11,11 @@ from sqlalchemy.orm import mapped_column
 
 from app.common.models import TimestampMixin
 from app.core.database import Base
+
+
+class UserRole(str, Enum):
+    USER = "USER"
+    ADMIN = "ADMIN"
 
 
 class User(
@@ -40,4 +47,8 @@ class User(
         default=False,
     )
 
-   
+    role: Mapped[UserRole] = mapped_column(
+        SqlEnum(UserRole),
+        nullable=False,
+        default=UserRole.USER,
+    )

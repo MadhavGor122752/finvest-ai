@@ -1,6 +1,9 @@
 from sqlalchemy.orm import Session
 
-from app.authentication.models import User
+from app.authentication.models import (
+    User,
+    UserRole,
+)
 from app.authentication.schemas import RegisterRequest
 
 from app.core.jwt import create_access_token
@@ -28,6 +31,7 @@ def register_user(
     user = User(
         email=request.email,
         password_hash=hash_password(request.password),
+        role=UserRole.USER,
     )
 
     db.add(user)
