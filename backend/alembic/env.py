@@ -11,6 +11,7 @@ from app.profile.models import UserProfile
 from app.authentication.models import User
 from app.transaction.models import Transaction
 from app.sip.models import SIP     
+from app.mutual_fund.models import MutualFund
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

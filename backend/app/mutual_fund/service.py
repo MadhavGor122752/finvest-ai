@@ -1,63 +1,97 @@
-import httpx
+from sqlalchemy.orm import Session
 
-from app.core.config import settings
+from app.mutual_fund.models import MutualFund
 from app.mutual_fund.schemas import (
-    MutualFundDetailResponse,
-    MutualFundResponse,
+    MutualFundCreateRequest,
+    MutualFundUpdateRequest,
 )
 
 
-def search_mutual_funds(
-    query: str | None = None,
-) -> list[MutualFundResponse]:
+def create_mutual_fund(
+    db: Session,
+    request: MutualFundCreateRequest,
+) -> MutualFund:
 
-    with httpx.Client(timeout=20.0) as client:
-        response = client.get(settings.MF_API_BASE_URL)
+    fund = MutualFund(
+        scheme_code=request.scheme_code,
+        scheme_name=request.scheme_name,
+        fund_house=request.fund_house,
+        category=request.category,
+        risk_level=request.risk_level,
+        nav=request.nav,
+        expense_ratio=request.expense_ratio,
+        aum=request.aum,
+    )
 
-    response.raise_for_status()
+    db.add(fund)
+    db.commit()
+    db.refresh(fund)
 
-    funds = response.json()
-
-    if query:
-        query = query.lower()
-
-        funds = [
-            fund
-            for fund in funds
-            if query in fund["schemeName"].lower()
-        ]
-
-    return [
-        MutualFundResponse(
-            scheme_code=fund["schemeCode"],
-            scheme_name=fund["schemeName"],
-        )
-        for fund in funds
-    ]
+    return fund
 
 
-def get_mutual_fund_details(
+def get_all_mutual_funds(
+    db: Session,
+):
+
+    return (
+        db.query(MutualFund)
+        .order_by(MutualFund.scheme_name)
+        .all()
+    )
+
+
+def get_mutual_fund_by_scheme_code(
+    db: Session,
     scheme_code: int,
-) -> MutualFundDetailResponse | None:
+):
 
-    with httpx.Client(timeout=20.0) as client:
-        response = client.get(
-            f"{settings.MF_API_BASE_URL}/{scheme_code}"
+    return (
+        db.query(MutualFund)
+        .filter(MutualFund.scheme_code == scheme_code)
+        .first()
+    )
+
+
+def update_mutual_fund(
+    db: Session,
+    fund: MutualFund,
+    request: MutualFundUpdateRequest,
+):
+
+    fund.scheme_name = request.scheme_name
+    fund.fund_house = request.fund_house
+    fund.category = request.category
+    fund.risk_level = request.risk_level
+    fund.nav = request.nav
+    fund.expense_ratio = request.expense_ratio
+    fund.aum = request.aum
+    fund.is_active = request.is_active
+
+    db.commit()
+    db.refresh(fund)
+
+    return fund
+
+
+def delete_mutual_fund(
+    db: Session,
+    fund: MutualFund,
+):
+
+    db.delete(fund)
+    db.commit()
+
+
+def search_mutual_funds(
+    db: Session,
+    query: str,
+):
+
+    return (
+        db.query(MutualFund)
+        .filter(
+            MutualFund.scheme_name.ilike(f"%{query}%")
         )
-
-    if response.status_code != 200:
-        return None
-
-    data = response.json()
-
-    latest_nav = float(data["data"][0]["nav"])
-
-    return MutualFundDetailResponse(
-        scheme_code=scheme_code,
-        scheme_name=data["meta"]["scheme_name"],
-        fund_house="Live via MFAPI",
-        category="Not Available",
-        risk_level="Not Available",
-        expense_ratio=0.0,
-        nav=latest_nav,
+        .all()
     )

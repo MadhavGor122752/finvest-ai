@@ -1,0 +1,5 @@
+scheme_code,scheme_name,fund_house,category,current_nav,history_records,one_year_return,three_year_cagr,five_year_cagr,ten_year_cagr,volatility,max_drawdown,sharpe_ratio,risk_level
+100033,Aditya Birla Sun Life Large & Mid Cap Fund - Regular Growth,Aditya Birla Sun Life Mutual Fund,Equity Scheme - Large & Mid Cap Fund,917.41,4987,0.32,11.96,8.65,11.06,20.95,-93.13,0.32,High
+100038,Aditya Birla Sun Life Income Fund - Growth - Regular Plan,Aditya Birla Sun Life Mutual Fund,Debt Scheme - Medium to Long Duration Fund,130.1067,4902,3.37,6.23,5.55,6.68,3.94,-77.84,0.46,Low
+100042,Aditya Birla Sun Life Liquid Fund-Retail (Growth),Aditya Birla Sun Life Mutual Fund,Debt Scheme - Liquid Fund,724.1661,6339,6.24,6.9,6.12,6.08,179.5,-97.4,0.2,High
+100043,Aditya Birla Sun Life Liquid Fund-Institutional (Growth),Aditya Birla Sun Life Mutual Fund,Debt Scheme - Liquid Fund,743.1443,6339,6.24,6.9,6.12,6.08,179.5,-97.45,0.2,High
